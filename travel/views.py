@@ -336,3 +336,33 @@ def public_itinerary(request, slug):
     trip = get_object_or_404(Trip, public_slug=slug, is_public=True)
     city_stops = trip.city_stops.prefetch_related("activities").all()
     return render(request, "travel/public_itinerary.html", {"trip": trip, "city_stops": city_stops})
+
+# Add these functions to travel/views.py
+
+def home(request):
+    featured_destinations = Destination.objects.filter(featured=True)[:3]
+    popular_packages = Package.objects.filter(featured=True)[:3]
+    search_form = SearchForm()
+    
+    # Mock stats for the hero section
+    stats = {
+        "destinations": Destination.objects.count() or 12,
+        "packages": Package.objects.count() or 45,
+        "travelers_booked": 1200,
+        "avg_rating": 4.9
+    }
+    
+    return render(request, "travel/home.html", {
+        "featured_destinations": featured_destinations,
+        "popular_packages": popular_packages,
+        "search_form": search_form,
+        "stats": stats
+    })
+
+def destination_list(request):
+    destinations = Destination.objects.all()
+    return render(request, "travel/destination_list.html", {"destinations": destinations})
+
+def package_list(request):
+    packages = Package.objects.all()
+    return render(request, "travel/package_list.html", {"packages": packages})

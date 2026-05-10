@@ -5,6 +5,9 @@ from . import views
 app_name = "travel"
 
 urlpatterns = [
+    path("", views.home, name="home"),
+    path("destinations/", views.destination_list, name="destination_list"),
+    path("packages/", views.package_list, name="package_list"),
     path("dashboard/", views.dashboard, name="dashboard"),
     path("trips/create/", views.trip_create, name="trip_create"),
     path("trips/", views.trip_list, name="my_trips"),

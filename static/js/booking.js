@@ -8,7 +8,7 @@
 
   function fmt(n) {
     const num = Number(n);
-    return num.toLocaleString(undefined, {
+    return num.toLocaleString('en-IN', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });

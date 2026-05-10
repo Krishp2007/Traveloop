@@ -91,7 +91,13 @@ class Activity(models.Model):
     title = models.CharField(max_length=150)
     category = models.CharField(max_length=30, choices=CATEGORY_CHOICES, default="other")
     description = models.TextField(blank=True)
-    cost = models.DecimalField(max_digits=10, decimal_places=2, default=0, validators=[MinValueValidator(0)])
+    cost = models.DecimalField(
+    max_digits=10, 
+    decimal_places=2, 
+    default=0, 
+    validators=[MinValueValidator(0)],
+    help_text="Cost in INR" # Optional clarification
+)
     duration_hours = models.DecimalField(
         max_digits=5, decimal_places=2, default=1, validators=[MinValueValidator(0)]
     )
@@ -159,3 +165,69 @@ class Note(models.Model):
 
     def __str__(self):
         return self.title
+# Add this to the end of travel/models.py
+
+class Destination(models.Model):
+    name = models.CharField(max_length=120)
+    slug = models.SlugField(unique=True, blank=True)
+    country = models.CharField(max_length=80)
+    short_description = models.CharField(max_length=255)
+    description = models.TextField()
+    image_url = models.URLField(max_length=500)
+    featured = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+class Package(models.Model):
+    destination = models.ForeignKey(Destination, on_delete=models.CASCADE, related_name="packages")
+    name = models.CharField(max_length=180)
+    slug = models.SlugField(blank=True)
+    headline = models.CharField(max_length=255)
+    description = models.TextField()
+    duration_days = models.PositiveSmallIntegerField(default=5)
+    price_per_person = models.DecimalField(max_digits=10, decimal_places=2)
+    max_travelers = models.PositiveSmallIntegerField(default=8)
+    image_url = models.URLField(max_length=500)
+    featured = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+
+class Booking(models.Model):
+    STATUS_CONFIRMED = 'confirmed'
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    package = models.ForeignKey(Package, on_delete=models.CASCADE)
+    travel_date = models.DateField()
+    travelers_count = models.PositiveSmallIntegerField(default=1)
+    total_price = models.DecimalField(max_digits=12, decimal_places=2)
+    status = models.CharField(max_length=20, default=STATUS_CONFIRMED)
+    booked_at = models.DateTimeField(auto_now_add=True)
+
+class Testimonial(models.Model):
+    name = models.CharField(max_length=120)
+    role = models.CharField(max_length=120, blank=True)
+    quote = models.TextField()
+    rating = models.PositiveSmallIntegerField(default=5)
+    avatar_url = models.URLField(max_length=500, blank=True)
+    featured = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def star_range(self):
+        return range(self.rating)
+
+class NewsletterSubscriber(models.Model):
+    email = models.EmailField(unique=True)
+    active = models.BooleanField(default=True)
+    subscribed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-subscribed_at']

@@ -13,12 +13,31 @@ User = get_user_model()
 CTRL = "form-control"
 
 
+# travel/forms.py
+
+# Replace the StyledLoginForm and SignUpForm classes
+
 class StyledLoginForm(AuthenticationForm):
     def __init__(self, request=None, *args, **kwargs):
         super().__init__(request=request, *args, **kwargs)
-        self.fields["username"].widget.attrs.update({"class": CTRL, "autofocus": True})
-        self.fields["password"].widget.attrs.update({"class": CTRL})
+        self.fields["username"].label = "Email"
+        self.fields["username"].widget.attrs.update({
+            "class": CTRL, 
+            "autofocus": True,
+            "placeholder": "email@example.com"
+        })
+# Replace the StyledLoginForm and SignUpForm classes
 
+class StyledLoginForm(AuthenticationForm):
+    def __init__(self, request=None, *args, **kwargs):
+        super().__init__(request=request, *args, **kwargs)
+        self.fields["username"].label = "Email"
+        self.fields["username"].widget.attrs.update({
+            "class": CTRL, 
+            "autofocus": True,
+            "placeholder": "email@example.com"
+        })
+        self.fields["password"].widget.attrs.update({"class": CTRL})
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -27,7 +46,7 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ("username", "email", "first_name", "last_name", "password1", "password2")
+        fields = ("email", "first_name", "last_name", "password1", "password2")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -43,14 +62,14 @@ class SignUpForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data["email"]
+        user.username = self.cleaned_data["email"] # Email as username
         user.first_name = self.cleaned_data.get("first_name", "")
         user.last_name = self.cleaned_data.get("last_name", "")
         if commit:
             user.save()
             UserProfile.objects.get_or_create(user=user)
         return user
-
-
+    
 class TripForm(forms.ModelForm):
     class Meta:
         model = Trip

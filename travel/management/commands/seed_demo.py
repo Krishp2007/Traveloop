@@ -11,11 +11,14 @@ from django.utils.text import slugify
 from travel.models import (
     Booking,
     Destination,
-    NewsletterSubscriber,
     Package,
-    Testimonial,
     UserProfile,
+    Trip,
+    Testimonial,          # Add this line
+    NewsletterSubscriber, # Add this line
 )
+# Note: Remove Testimonial and NewsletterSubscriber from the import 
+# if you haven't added those models back yet.
 
 
 class Command(BaseCommand):

@@ -19,7 +19,7 @@
 
   new Chart(barCtx, {
     type: "bar",
-    data: { labels, datasets: [{ label: "USD", data: values, backgroundColor: colors }] },
+    data: { labels, datasets: [{ label: "INR", data: values, backgroundColor: colors }] },
     options: {
       scales: {
         x: { ticks: { color: "#e2e8f0" }, grid: { color: "rgba(226,232,240,0.1)" } },
