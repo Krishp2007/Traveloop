@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Note{% endblock %}
+
+{% block content %}
+<section class="py-4">
+  <div class="glass-card p-4">
+    <h1 class="h4 mb-3">Edit Note</h1>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="d-flex gap-2">
+        <button class="btn btn-primary rounded-pill">Update</button>
+        <a href="{% url 'travel:notes_page' trip.id %}" class="btn btn-outline-light rounded-pill">Cancel</a>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

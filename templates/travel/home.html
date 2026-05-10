@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<!-- HERO -->
+<section class="relative min-h-screen flex flex-col justify-center overflow-hidden">
+  <div class="absolute inset-0 bg-cover bg-center scale-105" style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=80');"></div>
+  <div class="absolute inset-0 hero-gradient-overlay"></div>
+  <div class="container relative z-10 pt-32 pb-24">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7 text-white">
+        <p class="text-sm uppercase tracking-widest text-sky-200/90 mb-3">Elevated travel planning</p>
+        <h1 class="display-3 font-display fw-bold leading-tight mb-4">
+          Design your next
+          <span class="text-gradient d-block mt-2">unforgettable horizon</span>
+        </h1>
+        <p class="lead text-white/80 mb-4" style="max-width:34rem;">
+          Curated itineraries, concierge-grade support, and smart pricing clarity — packaged in one modern booking flow.
+        </p>
+        <div class="d-flex flex-wrap gap-3 mb-5">
+          <a href="#search" class="btn btn-lg btn-light rounded-pill px-4 shadow-lg">
+            <i class="bi bi-search-heart me-2 text-sky-500"></i>Start exploring
+          </a>
+          <a href="{% url 'travel:package_list' %}" class="btn btn-lg rounded-pill px-4 border border-white/50 text-white hover:bg-white/10">
+            View featured packages
+          </a>
+        </div>
+        <div class="d-flex flex-wrap gap-4 text-white/80 small">
+          <span><i class="bi bi-shield-lock text-sky-300 me-2"></i>Secure payments</span>
+          <span><i class="bi bi-headset text-sky-300 me-2"></i>24/7 trip desk</span>
+          <span><i class="bi bi-stars text-sky-300 me-2"></i>5★ rated planners</span>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="glass-panel p-4 p-lg-5 text-white" id="search">
+          <h2 class="h4 font-display fw-semibold mb-3"><i class="bi bi-globe-americas text-sky-300 me-2"></i>Trip Finder</h2>
+          <p class="small text-white/70 mb-4">Keywords, budget, vibes — Tailwind-crafted glass card with Bootstrap form controls.</p>
+          <form action="{% url 'travel:search' %}" method="get">
+            {% for field in search_form.visible_fields %}
+            <label class="form-label small text-white/70">{{ field.label }}</label>
+            <div class="mb-3">{{ field }}</div>
+            {% endfor %}
+            <button type="submit" class="btn w-100 rounded-pill fw-semibold border-0 text-slate-900 py-3" style="background:linear-gradient(90deg,#7dd3fc,#fdba74);">
+              Search destinations &amp; packages
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="py-16 bg-slate-900/70 border-y border-white/10">
+  <div class="container">
+    <div class="row g-4 text-center">
+      <div class="col-6 col-md-3">
+        <div class="glass-panel p-4">
+          <p class="display-6 font-display fw-bold text-sky-300 mb-1">{{ stats.destinations }}+</p>
+          <p class="text-white/65 small mb-0">Destinations modeled</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="glass-panel p-4">
+          <p class="display-6 font-display fw-bold text-orange-300 mb-1">{{ stats.packages }}</p>
+          <p class="text-white/65 small mb-0">Curated journeys</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="glass-panel p-4">
+          <p class="display-6 font-display fw-bold text-pink-200 mb-1">{{ stats.travelers_booked }}</p>
+          <p class="text-white/65 small mb-0">Bookings confirmed</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="glass-panel p-4">
+          <p class="display-6 font-display fw-bold text-emerald-300 mb-1">{{ stats.avg_rating }}</p>
+          <p class="text-white/65 small mb-0">Avg. traveler rating</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED DESTINATIONS -->
+<section class="py-20 bg-gradient-to-b from-slate-950 to-slate-900">
+  <div class="container">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-5">
+      <div>
+        <p class="text-sky-300 text-xs fw-bold text-uppercase tracking-wider mb-2">Hand-picked escapes</p>
+        <h2 class="display-6 font-display text-white fw-bold">Featured destinations</h2>
+      </div>
+      <a class="btn btn-outline-light rounded-pill" href="{% url 'travel:destination_list' %}">Browse all</a>
+    </div>
+    <div class="row g-4">
+      {% for dest in featured_destinations %}
+      <div class="col-md-6 col-xl-4">
+        <article class="card-hover-lift rounded-4 overflow-hidden bg-white/5 border border-white/10 shadow-xl h-100">
+          <img src="{{ dest.image_url }}" class="card-img-top object-cover" alt="{{ dest.name }}" style="height:220px;width:100%;object-fit:cover;">
+          <div class="p-4">
+            <div class="d-flex justify-content-between align-items-start mb-2 gap-3">
+              <h3 class="h5 font-display text-white fw-semibold mb-0">{{ dest.name }}</h3>
+              <span class="badge text-bg-sky rounded-pill align-self-start">{{ dest.country }}</span>
+            </div>
+            <p class="small text-white/65">{{ dest.short_description|truncatechars:130 }}</p>
+            <a class="small fw-semibold text-sky-300 text-decoration-none" href="{{ dest.get_absolute_url }}">Explore details →</a>
+          </div>
+        </article>
+      </div>
+      {% empty %}
+      <div class="col">
+        <p class="text-white/60">Add featured destinations via admin or run <code>python manage.py seed_demo</code>.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- POPULAR PACKAGES -->
+<section class="py-20 border-t border-white/10 bg-slate-950">
+  <div class="container">
+    <div class="text-center mb-5 mx-auto" style="max-width:620px;">
+      <p class="text-orange-200 text-xs fw-bold text-uppercase tracking-wider mb-2">Bundles that hit different</p>
+      <h2 class="display-6 font-display text-white fw-bold mb-3">Popular packages</h2>
+      <p class="text-white/65">Flexible traveler counts with transparent nightly math — Tailwind typography + Bootstrap grids.</p>
+    </div>
+    <div class="row g-4">
+      {% for pkg in popular_packages %}
+      <div class="col-md-6 col-lg-4">
+        <article class="h-100 glass-panel overflow-hidden rounded-4 p-4 d-flex flex-column">
+          <div class="rounded-3 overflow-hidden mb-3 shadow-lg">
+            <img src="{{ pkg.image_url }}" alt="{{ pkg.name }}" class="w-100 object-cover" style="height:180px;object-fit:cover;">
+          </div>
+          <p class="text-xs text-white/50 mb-1">{{ pkg.destination.name }}, {{ pkg.destination.country }}</p>
+          <h3 class="h5 font-display fw-semibold text-white">{{ pkg.name }}</h3>
+          <p class="small text-white/65 flex-grow-1">{{ pkg.headline }}</p>
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <span class="text-sky-200 fw-bold">${{ pkg.price_per_person }} <small class="fw-normal text-white/55">/ person</small></span>
+            {% if user.is_authenticated %}
+            <a href="{% url 'travel:package_book' pkg.id %}" class="btn btn-sm btn-light rounded-pill px-3">Book now</a>
+            {% else %}
+            <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-sm btn-outline-light rounded-pill px-3">Login to book</a>
+            {% endif %}
+          </div>
+        </article>
+      </div>
+      {% empty %}
+      <p class="text-white/60 text-center">No packages yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS SLIDER -->
+<section class="py-20 bg-gradient-to-br from-indigo-950 via-slate-950 to-slate-900 relative overflow-hidden">
+  <div class="position-absolute top-0 start-0 w-100 h-100 opacity-30 pointer-events-none" style="background: radial-gradient(circle at 10% 20%, rgba(56,189,248,0.4), transparent 55%), radial-gradient(circle at 90% 10%, rgba(251,146,60,0.35), transparent 45%);"></div>
+  <div class="container position-relative">
+    <div class="text-center mb-5">
+      <h2 class="display-6 font-display text-white fw-bold">Traveler love letters</h2>
+      <p class="text-white/65">Powered by Bootstrap 5 carousel + bespoke gradient cards.</p>
+    </div>
+    <div id="testimonialCarousel" class="carousel slide carousel-fade mx-auto" data-bs-ride="carousel" style="max-width:900px;">
+      <div class="carousel-inner rounded-4 glass-panel p-4 p-md-5">
+        {% for t in testimonials %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <div class="row align-items-center g-4">
+            <div class="col-md-3 text-center">
+              {% if t.avatar_url %}
+              <img src="{{ t.avatar_url }}" class="rounded-circle border border-white/30 shadow-lg" width="96" height="96" alt="{{ t.name }}">
+              {% else %}
+              <div class="rounded-circle bg-white/10 d-inline-flex align-items-center justify-content-center" style="width:96px;height:96px;">
+                <i class="bi bi-person-heart text-white fs-2"></i>
+              </div>
+              {% endif %}
+              <p class="mt-3 mb-0 fw-semibold text-white">{{ t.name }}</p>
+              <p class="small text-white/55 mb-0">{{ t.role }}</p>
+              <div class="text-warning small mt-2">
+                {% for _ in t.star_range %}<i class="bi bi-star-fill"></i>{% endfor %}
+              </div>
+            </div>
+            <div class="col-md-9">
+              <p class="lead text-white/90 mb-0">“{{ t.quote }}”</p>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="carousel-item active text-center text-white/70">Add testimonials in admin.</div>
+        {% endfor %}
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER + CTA -->
+<section class="py-20 bg-slate-950">
+  <div class="container">
+    <div class="row g-4 align-items-stretch">
+      <div class="col-lg-6">
+        <div class="h-100 glass-panel p-5 d-flex flex-column justify-content-center">
+          <h3 class="h3 font-display text-white fw-bold mb-3">Get the Sunday itinerary drop</h3>
+          <p class="text-white/65 mb-4">New routes, secret seasons, and partner hotel perks — one email, zero spam.</p>
+          <form action="{% url 'travel:newsletter_subscribe' %}" method="post" class="d-flex flex-column flex-sm-row gap-2">
+            {% csrf_token %}
+            <input name="email" type="email" required class="form-control rounded-pill bg-white/10 border-white/20 text-white" placeholder="Email address">
+            <button class="btn rounded-pill fw-semibold border-0 text-slate-900 px-4" type="submit" style="background:linear-gradient(90deg,#a5b4fc,#fb923c);">Subscribe</button>
+          </form>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="h-100 rounded-4 p-5 text-white position-relative overflow-hidden d-flex flex-column justify-content-center" style="background-image:linear-gradient(135deg,rgba(14,165,233,0.35),rgba(249,115,22,0.45)),url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1600&q=80');background-size:cover;background-position:center;">
+          <div class="position-relative">
+            <p class="text-xs text-uppercase fw-bold text-white/80 tracking-widest mb-2">Limited spring seats</p>
+            <h3 class="display-6 font-display fw-bold mb-3">Plan together. Travel brighter.</h3>
+            <p class="text-white/85 mb-4">Lock flexible deposits, split payments with friends, and invite co-travelers to your dashboard.</p>
+            {% if user.is_authenticated %}
+            <a href="{% url 'travel:dashboard' %}" class="btn btn-light rounded-pill px-4">Open dashboard</a>
+            {% else %}
+            <a href="{% url 'signup' %}" class="btn btn-light rounded-pill px-4 me-2">Create free account</a>
+            <a href="{% url 'travel:contact' %}" class="btn btn-outline-light rounded-pill px-4">Talk to human</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

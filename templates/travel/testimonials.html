@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Testimonials{% endblock %}
+
+{% block content %}
+<section class="py-28 bg-slate-950 text-white">
+  <div class="container">
+    <div class="text-center mb-5" style="max-width:620px;margin-inline:auto;">
+      <h1 class="display-5 font-display fw-bold mb-3">Loved by slow travelers</h1>
+      <p class="text-white/65">Pull quotes dynamically from SQLite via the Django ORM.</p>
+    </div>
+    <div class="row g-4">
+      {% for t in testimonials %}
+      <div class="col-md-6 col-xl-4">
+        <article class="glass-panel p-4 rounded-4 h-100 card-hover-lift">
+          <div class="d-flex gap-3 align-items-center mb-3">
+            {% if t.avatar_url %}
+            <img src="{{ t.avatar_url }}" class="rounded-circle" width="52" height="52" alt="{{ t.name }}">
+            {% endif %}
+            <div>
+              <p class="fw-semibold mb-0">{{ t.name }}</p>
+              <small class="text-white/55">{{ t.role }}</small>
+            </div>
+          </div>
+          <p class="text-white/80 fst-italic">“{{ t.quote }}”</p>
+          <div class="text-warning small">
+            {% for _ in t.star_range %}<i class="bi bi-star-fill"></i>{% endfor %}
+          </div>
+        </article>
+      </div>
+      {% empty %}
+      <p class="text-white/55">No testimonials yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,29 @@
+<nav id="main-navbar" class="navbar navbar-expand-lg navbar-dark sticky-top app-navbar">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="{% if user.is_authenticated %}{% url 'travel:dashboard' %}{% else %}{% url 'login' %}{% endif %}">
+      <span class="brand-badge"><i class="bi bi-airplane-engines-fill"></i></span> Traveloop
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="topNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        {% if user.is_authenticated %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'travel:dashboard' %}">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'travel:my_trips' %}">My Trips</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'travel:trip_create' %}">Create Trip</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'travel:profile' %}">Profile</a></li>
+        <li class="nav-item ms-lg-2">
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button class="btn btn-sm btn-outline-light rounded-pill px-3">Logout</button>
+          </form>
+        </li>
+        {% else %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+        <li class="nav-item ms-lg-2"><a class="btn btn-sm btn-primary rounded-pill px-3" href="{% url 'signup' %}">Signup</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

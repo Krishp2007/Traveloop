@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Contact{% endblock %}
+
+{% block content %}
+<section class="py-28 bg-slate-950 text-white relative overflow-hidden">
+  <div class="position-absolute top-0 start-0 w-50 h-full opacity-30" style="background: radial-gradient(circle at 30% 20%, rgba(56,189,248,0.45), transparent 60%);"></div>
+  <div class="container position-relative">
+    <div class="row g-5">
+      <div class="col-lg-5">
+        <p class="text-sky-300 small fw-bold text-uppercase mb-2">We're real humans</p>
+        <h1 class="display-6 font-display fw-bold mb-3">Concierge inbox</h1>
+        <p class="text-white/65 mb-4">Responses within one business day. For urgent-trip changes mention your booking ID.</p>
+        <div class="d-flex gap-3 text-white mb-4">
+          <i class="bi bi-geo-alt text-orange-300 fs-5"></i>
+          <span>HQ · Remote-first · PST business hours · <strong>concierge@traveloop.demo</strong></span>
+        </div>
+        <div class="glass-panel p-4 rounded-4">
+          <p class="small text-white/55 mb-1">Prefer chat?</p>
+          <button class="btn btn-outline-light w-100 rounded-pill mb-2" type="button" disabled>WhatsApp (demo)</button>
+          <small class="text-white/45">Hook your Twilio/MessageBird integration here later.</small>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="glass-panel rounded-4 p-4 p-md-5 border border-white/10">
+          <form method="post" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+            <label class="form-label text-white/70">{{ field.label }}</label>
+            {{ field.errors }}
+            {{ field }}
+            <div class="mb-3"></div>
+            {% endfor %}
+            <button class="btn btn-lg rounded-pill w-100 border-0 fw-bold text-slate-900 mt-3" style="background:linear-gradient(90deg,#38bdf8,#fb923c);">Send message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

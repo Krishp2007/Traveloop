@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}My bookings{% endblock %}
+
+{% block content %}
+<section class="py-28 bg-slate-950 text-white">
+  <div class="container">
+    <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center mb-4">
+      <div>
+        <h1 class="h2 font-display fw-bold mb-1">Booking history</h1>
+        <p class="text-white/60 mb-0">Transparent totals and traveler counts.</p>
+      </div>
+      <a class="btn btn-outline-light rounded-pill" href="{% url 'travel:package_list' %}">Book another</a>
+    </div>
+    <div class="table-responsive glass-panel rounded-4 p-3">
+      <table class="table table-dark table-hover align-middle mb-0">
+        <thead>
+          <tr class="text-white/50 small">
+            <th>ID</th>
+            <th>Package</th>
+            <th>Date</th>
+            <th>Travelers</th>
+            <th>Total</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for b in bookings %}
+          <tr>
+            <td class="fw-semibold">#{{ b.id }}</td>
+            <td>
+              {{ b.package.name }}
+              <div class="small text-white/45">{{ b.package.destination.name }}</div>
+            </td>
+            <td>{{ b.travel_date|date:"M j, Y" }}</td>
+            <td>{{ b.travelers_count }}</td>
+            <td class="fw-bold text-sky-200">${{ b.total_price }}</td>
+            <td><span class="badge rounded-pill text-bg-secondary">{{ b.status }}</span></td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="6" class="text-center py-5 text-white/55">No bookings yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+<section class="py-28 bg-gradient-to-br from-indigo-950 via-slate-950 to-orange-950/40 text-white">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-6">
+        <p class="text-orange-300 small fw-bold text-uppercase mb-2">Our story</p>
+        <h1 class="display-5 font-display fw-bold mb-4">Traveloop pairs product thinking with field-tested guides.</h1>
+        <p class="text-white/70 lead">We started as a tiny collective of trip designers tired of clunky booking engines. Today we blend transparent pricing, calm UX, and partner hotels that actually deliver.</p>
+        <ul class="list-unstyled text-white/75">
+          <li class="mb-2"><i class="bi bi-check-circle text-emerald-300 me-2"></i>Local operators vetted yearly</li>
+          <li class="mb-2"><i class="bi bi-check-circle text-emerald-300 me-2"></i>Carbon-balanced domestic flights wherever possible</li>
+          <li class="mb-2"><i class="bi bi-check-circle text-emerald-300 me-2"></i>Dashboard + email double confirmation</li>
+        </ul>
+      </div>
+      <div class="col-lg-6">
+        <div class="row g-3">
+          <div class="col-6">
+            <div class="glass-panel rounded-4 p-4 h-100 text-center card-hover-lift">
+              <p class="display-6 font-display fw-bold text-sky-200 mb-2">94%</p>
+              <p class="small text-white/60 mb-0">five-star traveler satisfaction</p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="glass-panel rounded-4 p-4 h-100 text-center card-hover-lift">
+              <p class="display-6 font-display fw-bold text-orange-200 mb-2">120+</p>
+              <p class="small text-white/60 mb-0">certified guides worldwide</p>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="rounded-4 overflow-hidden border border-white/10 shadow-2xl">
+              <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=80" alt="Team voyage" class="w-100" style="max-height:360px;object-fit:cover;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

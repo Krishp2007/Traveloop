@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Login · Traveloop{% endblock %}
+
+{% block content %}
+<section class="auth-wrap py-5">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-7 col-lg-5">
+        <div class="glass-card p-4 p-lg-5">
+          <div class="text-center mb-4">
+            <span class="brand-badge fs-4"><i class="bi bi-person-lock"></i></span>
+            <h1 class="h3 mt-3 mb-1">Welcome back</h1>
+            <p class="text-secondary mb-0">Login to continue planning your trips.</p>
+          </div>
+          <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            {% if request.GET.next %}
+            <input type="hidden" name="next" value="{{ request.GET.next }}">
+            {% endif %}
+            <div class="mb-3">
+              <label class="form-label">Username</label>
+              {{ form.username }}
+              {% if form.username.errors %}<div class="small text-danger mt-1">{{ form.username.errors }}</div>{% endif %}
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Password</label>
+              {{ form.password }}
+              {% if form.password.errors %}<div class="small text-danger mt-1">{{ form.password.errors }}</div>{% endif %}
+            </div>
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+            {% endif %}
+            <button class="btn btn-primary w-100 rounded-pill py-2">Login</button>
+          </form>
+          <div class="d-flex justify-content-between mt-3 small">
+            <a href="{% url 'password_reset' %}" class="text-info text-decoration-none">Forgot password?</a>
+            <a href="{% url 'signup' %}" class="text-info text-decoration-none">Create account</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

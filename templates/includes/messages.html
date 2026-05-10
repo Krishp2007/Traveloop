@@ -1,0 +1,11 @@
+{% if messages %}
+<div class="container-fluid px-lg-4 mt-3">
+  {% for message in messages %}
+    {% with t=message.tags|default:'info' %}
+    <div class="alert alert-{% if t == 'error' %}danger{% else %}{{ t }}{% endif %} glass-card border-0 mb-2" role="alert">
+      {{ message }}
+    </div>
+    {% endwith %}
+  {% endfor %}
+</div>
+{% endif %}

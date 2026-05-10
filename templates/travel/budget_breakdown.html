@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Budget Breakdown{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<section class="py-4">
+  <h1 class="h4 mb-3">Budget · {{ trip.title }}</h1>
+  <div class="row g-3">
+    <div class="col-xl-4">
+      <div class="glass-card p-4">
+        <h2 class="h6">Update Costs</h2>
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button class="btn btn-primary w-100 rounded-pill">Save Budget</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-xl-8">
+      <div class="glass-card p-4 mb-3">
+        <div class="row g-3">
+          <div class="col-md-6"><div class="trip-row p-3 rounded-3"><small class="text-secondary">Total Estimated Cost</small><h3 class="mb-0">${{ total }}</h3></div></div>
+          <div class="col-md-6"><div class="trip-row p-3 rounded-3"><small class="text-secondary">Average Daily Cost</small><h3 class="mb-0">${{ avg_daily|floatformat:2 }}</h3></div></div>
+        </div>
+      </div>
+      <div class="glass-card p-4">
+        <div class="row g-4">
+          <div class="col-md-6"><canvas id="budgetPie"></canvas></div>
+          <div class="col-md-6"><canvas id="budgetBar"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/budget.js' %}"></script>
+{{ chart_data|json_script:"budget-data" }}
+<script>
+  window.traveloopBudgetData = JSON.parse(document.getElementById("budget-data").textContent);
+</script>
+{% endblock %}

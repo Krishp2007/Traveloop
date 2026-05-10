@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}{{ trip.title }}{% endblock %}
+
+{% block content %}
+<section class="py-4">
+  <div class="glass-card p-4 mb-3">
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+      <div>
+        <h1 class="h3 mb-1">{{ trip.title }}</h1>
+        <p class="text-secondary mb-1">{{ trip.start_date }} to {{ trip.end_date }}</p>
+        <p class="mb-0">{{ trip.description }}</p>
+      </div>
+      <div class="d-flex gap-2 align-items-start flex-wrap">
+        <a href="{% url 'travel:itinerary_builder' trip.id %}" class="btn btn-primary rounded-pill">Build Itinerary</a>
+        <a href="{% url 'travel:itinerary_timeline' trip.id %}" class="btn btn-outline-light rounded-pill">Timeline</a>
+        <a href="{% url 'travel:budget_breakdown' trip.id %}" class="btn btn-outline-light rounded-pill">Budget</a>
+        <a href="{% url 'travel:packing_checklist' trip.id %}" class="btn btn-outline-light rounded-pill">Packing</a>
+        <a href="{% url 'travel:notes_page' trip.id %}" class="btn btn-outline-light rounded-pill">Notes</a>
+      </div>
+    </div>
+    <div class="mt-3 d-flex gap-2">
+      <a href="{% url 'travel:trip_edit' trip.id %}" class="btn btn-sm btn-outline-light rounded-pill">Edit Trip</a>
+      <form method="post" action="{% url 'travel:trip_delete' trip.id %}">
+        {% csrf_token %}
+        <button class="btn btn-sm btn-outline-danger rounded-pill">Delete Trip</button>
+      </form>
+      {% if trip.is_public %}
+      <a href="{% url 'travel:public_itinerary' trip.public_slug %}" class="btn btn-sm btn-outline-info rounded-pill">Public Link</a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="row g-3">
+    <div class="col-lg-8">
+      <div class="glass-card p-4">
+        <h2 class="h5">City Stops</h2>
+        {% for stop in city_stops %}
+          <div class="trip-row p-3 rounded-3 mb-2">
+            <div class="d-flex justify-content-between">
+              <strong>{{ stop.order }}. {{ stop.city_name }}, {{ stop.country }}</strong>
+              <small class="text-secondary">{{ stop.arrival_date }} → {{ stop.departure_date }}</small>
+            </div>
+            {% for activity in stop.activities.all %}
+              <div class="small text-secondary">• {{ activity.title }} ({{ activity.activity_date }})</div>
+            {% empty %}
+              <div class="small text-secondary">No activities added.</div>
+            {% endfor %}
+          </div>
+        {% empty %}
+          <p class="text-secondary mb-0">No city stops yet.</p>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="glass-card p-4">
+        <h2 class="h6">Quick Notes</h2>
+        {% for note in notes %}
+          <div class="border-bottom border-secondary-subtle py-2">
+            <strong>{{ note.title }}</strong>
+            <div class="small text-secondary">{{ note.content|truncatechars:90 }}</div>
+          </div>
+        {% empty %}
+          <p class="small text-secondary mb-0">No notes yet.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

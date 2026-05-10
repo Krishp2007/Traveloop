@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Notes{% endblock %}
+
+{% block content %}
+<section class="py-4">
+  <h1 class="h4 mb-3">Notes & Journal · {{ trip.title }}</h1>
+  <div class="row g-3">
+    <div class="col-lg-5">
+      <div class="glass-card p-4">
+        <h2 class="h6">Add Note</h2>
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button class="btn btn-primary w-100 rounded-pill">Save Note</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-7">
+      <div class="glass-card p-4">
+        {% for note in notes %}
+          <div class="trip-row p-3 rounded-3 mb-2">
+            <div class="d-flex justify-content-between align-items-center">
+              <strong>{{ note.title }}</strong>
+              <small class="text-secondary">{{ note.created_at|date:"M d, Y H:i" }}</small>
+            </div>
+            <p class="mb-2">{{ note.content }}</p>
+            <div class="d-flex gap-2">
+              <a class="btn btn-sm btn-outline-light rounded-pill" href="{% url 'travel:note_edit' trip.id note.id %}">Edit</a>
+              <form method="post" action="{% url 'travel:note_delete' trip.id note.id %}">{% csrf_token %}<button class="btn btn-sm btn-outline-danger rounded-pill">Delete</button></form>
+            </div>
+          </div>
+        {% empty %}
+          <p class="text-secondary mb-0">No notes added yet.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

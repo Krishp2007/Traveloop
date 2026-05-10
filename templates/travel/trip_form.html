@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<section class="py-4">
+  <div class="glass-card p-4 p-lg-5">
+    <h1 class="h4 mb-4">{{ page_title }}</h1>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row g-3">
+        <div class="col-md-6"><label class="form-label">Title</label>{{ form.title }}</div>
+        <div class="col-md-3"><label class="form-label">Start date</label>{{ form.start_date }}</div>
+        <div class="col-md-3"><label class="form-label">End date</label>{{ form.end_date }}</div>
+        <div class="col-12"><label class="form-label">Description</label>{{ form.description }}</div>
+        <div class="col-md-6"><label class="form-label">Cover image</label>{{ form.cover_image }}</div>
+        <div class="col-md-6 d-flex align-items-center pt-4">
+          <div class="form-check">{{ form.is_public }} <label class="form-check-label ms-2">Enable public sharing</label></div>
+        </div>
+      </div>
+      {% if form.non_field_errors %}<div class="text-danger small mt-2">{{ form.non_field_errors }}</div>{% endif %}
+      <div class="mt-4 d-flex gap-2">
+        <button class="btn btn-primary rounded-pill px-4">Save Trip</button>
+        <a href="{% url 'travel:my_trips' %}" class="btn btn-outline-light rounded-pill px-4">Cancel</a>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

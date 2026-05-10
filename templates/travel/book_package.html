@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Book {{ package.name }}{% endblock %}
+
+{% block content %}
+<section class="py-28 bg-slate-950 text-white">
+  <div class="container">
+    <div class="row g-5 align-items-start">
+      <div class="col-lg-5">
+        <div class="sticky-top" style="top:96px;">
+          <div class="rounded-4 overflow-hidden border border-white/10 shadow-2xl mb-4">
+            <img src="{{ package.image_url }}" class="w-100" alt="{{ package.name }}" style="max-height:360px;object-fit:cover;">
+          </div>
+          <p class="text-white/55 small mb-1">{{ package.destination.name }}, {{ package.destination.country }}</p>
+          <h1 class="h2 font-display fw-bold mb-3">{{ package.name }}</h1>
+          <p class="text-white/70">{{ package.description|truncatechars:320 }}</p>
+          <div class="glass-panel p-4 rounded-4 mt-4">
+            <div class="d-flex justify-content-between">
+              <span class="text-white/60">Duration</span><span>{{ package.duration_days }} days</span>
+            </div>
+            <div class="d-flex justify-content-between mt-2">
+              <span class="text-white/60">Max travelers</span><span>{{ package.max_travelers }}</span>
+            </div>
+            <div class="d-flex justify-content-between mt-3 fs-5 fw-bold text-sky-200">
+              <span>Per person</span>
+              <span id="booking-ppp">{{ price_per_person }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="glass-panel p-4 p-md-5 rounded-4">
+          <h2 class="h4 font-display mb-4">Secure booking</h2>
+          <form method="post" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+            <label class="form-label text-white/70 small">{{ field.label }}</label>
+            {{ field.errors }}
+            {{ field }}
+            {% if field.help_text %}<div class="form-text text-white/45">{{ field.help_text }}</div>{% endif %}
+            <div class="mb-3"></div>
+            {% endfor %}
+            <div class="alert alert-dark border border-white/10 rounded-4 py-3 px-4 mb-4">
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="text-white/70">Estimated total</span>
+                <span class="fs-4 fw-bold text-white">USD <span id="booking-total">{{ price_per_person }}</span></span>
+              </div>
+              <small class="text-white/50">Calculated dynamically with vanilla JS; server recomputes on submit.</small>
+            </div>
+            <button class="btn w-100 btn-lg rounded-pill fw-bold border-0 text-slate-900" style="background:linear-gradient(90deg,#bbf7d0,#bae6fd);">
+              Confirm booking
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/booking.js' %}" defer></script>
+{% endblock %}

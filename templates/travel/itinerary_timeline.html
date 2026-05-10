@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Timeline View{% endblock %}
+
+{% block content %}
+<section class="py-4">
+  <h1 class="h4 mb-3">Itinerary Timeline · {{ trip.title }}</h1>
+  <div class="glass-card p-4 mb-3">
+    <h2 class="h6">City-wise grouping</h2>
+    {% for stop in city_stops %}
+      <div class="trip-row p-3 rounded-3 mb-2">
+        <strong>{{ stop.city_name }}, {{ stop.country }}</strong>
+        <div class="small text-secondary">{{ stop.arrival_date }} to {{ stop.departure_date }}</div>
+      </div>
+    {% empty %}
+      <p class="text-secondary">No city stops yet.</p>
+    {% endfor %}
+  </div>
+  <div class="glass-card p-4">
+    <h2 class="h6">Day-wise grouping</h2>
+    {% for day, activities in day_map.items %}
+      <div class="mb-3">
+        <h3 class="h6">{{ day }}</h3>
+        {% for activity in activities %}
+          <div class="trip-row p-2 rounded-3 mb-1">
+            {{ activity.title }} - {{ activity.city_stop.city_name }} ({{ activity.duration_hours }}h)
+          </div>
+        {% endfor %}
+      </div>
+    {% empty %}
+      <p class="text-secondary mb-0">No activities yet.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

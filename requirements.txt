@@ -1,0 +1,4 @@
+# Traveloop — Django travel booking site
+# Python 3.10+ recommended
+Django>=4.2,<5.1
+Pillow>=10.0.0

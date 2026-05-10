@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional component layer helpers used by templates */
+@layer components {
+  .glass-panel {
+    @apply rounded-3xl border border-white/15 bg-white/10 shadow-2xl shadow-sky-900/20 backdrop-blur-xl;
+  }
+}

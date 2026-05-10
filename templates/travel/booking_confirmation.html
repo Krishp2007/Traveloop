@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Booking confirmed{% endblock %}
+
+{% block content %}
+<section class="py-28 bg-slate-950 text-white">
+  <div class="container" style="max-width:720px;">
+    <div class="glass-panel p-5 rounded-4 text-center mb-4">
+      <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-success/20 text-success mb-3" style="width:72px;height:72px;">
+        <i class="bi bi-check2-circle fs-2"></i>
+      </div>
+      <h1 class="h3 font-display fw-bold mb-2">You're going places ✈️</h1>
+      <p class="text-white/65 mb-0">Reference <span class="text-white fw-semibold">#{{ booking.id }}</span> · {{ booking.booked_at|date:"M j, Y H:i" }}</p>
+    </div>
+    <div class="glass-panel p-4 rounded-4">
+      <div class="row g-3 small">
+        <div class="col-sm-6">
+          <p class="text-white/50 mb-1">Package</p>
+          <p class="fw-semibold mb-0">{{ booking.package.name }}</p>
+        </div>
+        <div class="col-sm-6">
+          <p class="text-white/50 mb-1">Destination</p>
+          <p class="fw-semibold mb-0">{{ booking.package.destination.name }}</p>
+        </div>
+        <div class="col-sm-6">
+          <p class="text-white/50 mb-1">Travel date</p>
+          <p class="fw-semibold mb-0">{{ booking.travel_date|date:"M j, Y" }}</p>
+        </div>
+        <div class="col-sm-6">
+          <p class="text-white/50 mb-1">Travelers</p>
+          <p class="fw-semibold mb-0">{{ booking.travelers_count }}</p>
+        </div>
+        <div class="col-12">
+          <p class="text-white/50 mb-1">Total charged</p>
+          <p class="fs-4 text-sky-200 fw-bold mb-0">${{ booking.total_price }}</p>
+        </div>
+        {% if booking.notes %}
+        <div class="col-12">
+          <p class="text-white/50 mb-1">Notes</p>
+          <p class="mb-0">{{ booking.notes }}</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="d-flex flex-wrap gap-3 justify-content-center mt-5">
+      <a href="{% url 'travel:my_bookings' %}" class="btn btn-light rounded-pill px-4">My bookings</a>
+      <a href="{% url 'travel:home' %}" class="btn btn-outline-light rounded-pill px-4">Back home</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

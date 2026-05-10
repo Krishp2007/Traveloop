@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<section class="py-4">
+  <div class="container-fluid p-0">
+    <div class="d-flex flex-column flex-md-row gap-3 justify-content-between mb-4">
+      <div>
+        <p class="small text-secondary text-uppercase mb-1">Welcome back</p>
+        <h1 class="h3 mb-1">{{ user.first_name|default:user.username }}, ready for your next trip?</h1>
+        <p class="text-secondary mb-0">Manage itinerary, budget, packing, and notes from one dashboard.</p>
+      </div>
+      <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-primary rounded-pill" href="{% url 'travel:trip_create' %}"><i class="bi bi-plus-circle me-1"></i>Create Trip</a>
+        <a class="btn btn-outline-light rounded-pill" href="{% url 'travel:my_trips' %}">View Trips</a>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-md-6 col-xl-3"><div class="glass-card p-3"><p class="small text-secondary mb-1">Total Trips</p><h3 class="mb-0">{{ trips_count }}</h3></div></div>
+      <div class="col-md-6 col-xl-3"><div class="glass-card p-3"><p class="small text-secondary mb-1">City Stops</p><h3 class="mb-0">{{ city_count }}</h3></div></div>
+      <div class="col-md-6 col-xl-3"><div class="glass-card p-3"><p class="small text-secondary mb-1">Activities</p><h3 class="mb-0">{{ activity_count }}</h3></div></div>
+      <div class="col-md-6 col-xl-3"><div class="glass-card p-3"><p class="small text-secondary mb-1">Total Budget</p><h3 class="mb-0">${{ total_budget }}</h3></div></div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-xl-8">
+        <div class="glass-card p-4 mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="h5 mb-0">Upcoming Trips</h2>
+            <a class="small text-info text-decoration-none" href="{% url 'travel:my_trips' %}">View all</a>
+          </div>
+          {% for trip in upcoming_trips %}
+          <div class="trip-row p-3 mb-2 rounded-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <p class="mb-1 fw-semibold">{{ trip.title }}</p>
+                <p class="small text-secondary mb-0">{{ trip.start_date }} to {{ trip.end_date }}</p>
+              </div>
+              <a class="btn btn-sm btn-outline-light rounded-pill" href="{% url 'travel:trip_detail' trip.id %}">Open</a>
+            </div>
+          </div>
+          {% empty %}
+          <p class="text-secondary mb-0">No upcoming trips. Create one now.</p>
+          {% endfor %}
+        </div>
+        <div class="glass-card p-4">
+          <h2 class="h5 mb-3">Recent Activities</h2>
+          {% for activity in recent_activities %}
+          <div class="d-flex justify-content-between border-bottom border-secondary-subtle py-2">
+            <div><strong>{{ activity.title }}</strong> <span class="small text-secondary">({{ activity.city_stop.city_name }})</span></div>
+            <span class="small text-secondary">{{ activity.activity_date }}</span>
+          </div>
+          {% empty %}
+          <p class="text-secondary mb-0">No activities yet.</p>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col-xl-4">
+        <div class="glass-card p-4 mb-4">
+          <h2 class="h6 mb-3">Quick Actions</h2>
+          <div class="d-grid gap-2">
+            <a href="{% url 'travel:trip_create' %}" class="btn btn-primary rounded-pill">Create New Trip</a>
+            <a href="{% url 'travel:city_search' %}" class="btn btn-outline-light rounded-pill">Find City Stops</a>
+            <a href="{% url 'travel:activity_search' %}" class="btn btn-outline-light rounded-pill">Find Activities</a>
+          </div>
+        </div>
+        <div class="glass-card p-4">
+          <h2 class="h6 mb-2">Recommended Destinations</h2>
+          <div class="d-flex flex-wrap gap-2">
+            {% for city in recommended_destinations %}
+            <span class="badge rounded-pill text-bg-dark border border-secondary-subtle">{{ city }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

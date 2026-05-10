@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Packing Checklist{% endblock %}
+
+{% block content %}
+<section class="py-4">
+  <h1 class="h4 mb-3">Packing Checklist · {{ trip.title }}</h1>
+  <div class="row g-3">
+    <div class="col-lg-4">
+      <div class="glass-card p-4">
+        <h2 class="h6">Add Item</h2>
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button class="btn btn-primary w-100 rounded-pill">Add</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="glass-card p-4 mb-3">
+        <form method="get" class="d-flex gap-2">
+          <select class="form-select" name="category">
+            <option value="">All categories</option>
+            <option value="documents" {% if category == 'documents' %}selected{% endif %}>Documents</option>
+            <option value="clothing" {% if category == 'clothing' %}selected{% endif %}>Clothing</option>
+            <option value="electronics" {% if category == 'electronics' %}selected{% endif %}>Electronics</option>
+            <option value="toiletries" {% if category == 'toiletries' %}selected{% endif %}>Toiletries</option>
+            <option value="medicine" {% if category == 'medicine' %}selected{% endif %}>Medicine</option>
+            <option value="other" {% if category == 'other' %}selected{% endif %}>Other</option>
+          </select>
+          <button class="btn btn-outline-light rounded-pill">Filter</button>
+        </form>
+      </div>
+      <div class="glass-card p-4">
+        {% for item in items %}
+        <div class="trip-row p-3 rounded-3 mb-2 d-flex justify-content-between align-items-center">
+          <div>
+            <strong class="{% if item.is_packed %}text-decoration-line-through text-secondary{% endif %}">{{ item.item_name }}</strong>
+            <span class="badge rounded-pill text-bg-dark ms-2">{{ item.get_category_display }}</span>
+          </div>
+          <div class="d-flex gap-2">
+            <form method="post" action="{% url 'travel:packing_toggle' trip.id item.id %}">{% csrf_token %}<button class="btn btn-sm btn-outline-success rounded-pill">{% if item.is_packed %}Unpack{% else %}Packed{% endif %}</button></form>
+            <form method="post" action="{% url 'travel:packing_delete' trip.id item.id %}">{% csrf_token %}<button class="btn btn-sm btn-outline-danger rounded-pill">Remove</button></form>
+          </div>
+        </div>
+        {% empty %}
+          <p class="text-secondary mb-0">No packing items yet.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

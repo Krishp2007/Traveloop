@@ -1,0 +1,18 @@
+<div class="glass-card p-3 position-sticky" style="top: 84px;">
+  <h6 class="text-uppercase text-muted mb-3">Workspace</h6>
+  <div class="list-group list-group-flush sidebar-nav">
+    <a href="{% url 'travel:dashboard' %}" class="list-group-item list-group-item-action">Overview</a>
+    <a href="{% url 'travel:my_trips' %}" class="list-group-item list-group-item-action">My Trips</a>
+    <a href="{% url 'travel:trip_create' %}" class="list-group-item list-group-item-action">Create Trip</a>
+    <a href="{% url 'travel:city_search' %}" class="list-group-item list-group-item-action">City Search</a>
+    <a href="{% url 'travel:activity_search' %}" class="list-group-item list-group-item-action">Activity Search</a>
+    <a href="{% url 'travel:profile' %}" class="list-group-item list-group-item-action">Profile</a>
+  </div>
+  <hr class="border-secondary-subtle">
+  <p class="small text-secondary mb-2">Recent trips</p>
+  {% for trip in nav_recent_trips %}
+    <a class="d-block text-decoration-none small mb-1 text-info" href="{% url 'travel:trip_detail' trip.id %}">{{ trip.title }}</a>
+  {% empty %}
+    <p class="small text-secondary mb-0">No trips yet.</p>
+  {% endfor %}
+</div>

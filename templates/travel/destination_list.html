@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Destinations{% endblock %}
+
+{% block content %}
+<section class="relative py-28 overflow-hidden bg-slate-950">
+  <div class="pointer-events-none position-absolute top-0 start-0 end-0 h-96 opacity-40" style="background:radial-gradient(circle at 20% 0%, rgba(56,189,248,0.5),transparent 55%),radial-gradient(circle at 80% 40%,rgba(251,146,60,0.45),transparent 50%);"></div>
+  <div class="container position-relative">
+    <div class="text-center mx-auto mb-5" style="max-width:640px;">
+      <p class="text-sky-300 fw-bold small text-uppercase tracking-wide mb-2">World atlas</p>
+      <h1 class="display-5 font-display text-white fw-bold">Destination catalogue</h1>
+      <p class="lead text-white/65 mb-4">Responsive Bootstrap grid layered with Tailwind glass cards.</p>
+    </div>
+    <div class="row g-4">
+      {% for d in destinations %}
+      <div class="col-md-6 col-lg-4">
+        <a href="{{ d.get_absolute_url }}" class="text-decoration-none d-block">
+          <article class="card-hover-lift rounded-4 overflow-hidden h-100 border border-white/10 bg-white/[0.04] backdrop-blur-xl shadow-xl">
+            <img src="{{ d.image_url }}" class="w-100" alt="{{ d.name }}" style="height:220px;object-fit:cover;">
+            <div class="p-4 text-white">
+              <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                <h2 class="h5 mb-0 font-display fw-semibold">{{ d.name }}</h2>
+                <span class="badge rounded-pill text-bg-secondary">{{ d.country }}</span>
+              </div>
+              <p class="small text-white/60 mb-0">{{ d.short_description|truncatechars:120 }}</p>
+            </div>
+          </article>
+        </a>
+      </div>
+      {% empty %}
+      <p class="text-white/60">No destinations yet — run <code>python manage.py seed_demo</code>.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

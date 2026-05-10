@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}My Trips{% endblock %}
+
+{% block content %}
+<section class="py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h4 mb-0">My Trips</h1>
+    <a href="{% url 'travel:trip_create' %}" class="btn btn-primary rounded-pill">Create Trip</a>
+  </div>
+  <div class="row g-3">
+    {% for trip in trips %}
+    <div class="col-md-6 col-xl-4">
+      <div class="glass-card trip-card h-100">
+        {% if trip.cover_image %}
+        <img src="{{ trip.cover_image.url }}" class="card-img-top rounded-top-4" style="height:180px;object-fit:cover;" alt="{{ trip.title }}">
+        {% endif %}
+        <div class="p-3">
+          <h2 class="h6 mb-1">{{ trip.title }}</h2>
+          <p class="small text-secondary">{{ trip.start_date }} to {{ trip.end_date }}</p>
+          <p class="small">{{ trip.description|truncatechars:110 }}</p>
+          <div class="d-flex gap-2 flex-wrap">
+            <a href="{% url 'travel:trip_detail' trip.id %}" class="btn btn-sm btn-outline-light rounded-pill">Open</a>
+            <a href="{% url 'travel:trip_edit' trip.id %}" class="btn btn-sm btn-outline-light rounded-pill">Edit</a>
+            <a href="{% url 'travel:budget_breakdown' trip.id %}" class="btn btn-sm btn-outline-light rounded-pill">Budget</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12"><div class="glass-card p-4">No trips yet. Create your first itinerary.</div></div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
